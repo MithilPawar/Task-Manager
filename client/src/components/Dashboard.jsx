@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   createTask,
   getAllTask,
@@ -25,7 +25,7 @@ const Dashboard = () => {
     setTimeout(() => setMessage({ type: "", text: "" }), 3000);
   };
 
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     try {
       setLoading(true);
       const allTasks = await getAllTask();
@@ -35,16 +35,15 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [fetchTasks]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { title, description, status } = formData;
-    console.log(title, description, status);
     if (!title.trim() || !description.trim() || !status.trim()) {
       showMessage("error", "Please fill out all fields.");
       return;

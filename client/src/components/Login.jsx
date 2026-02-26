@@ -1,17 +1,17 @@
-import { useState } from "react";
+import { useState, createElement } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
 import { useAuth } from "../hooks/useAuth";
 
 const InputField = ({
-  icon: Icon,
+  Icon,
   value,
   onChange,
   type = "text",
   placeholder,
 }) => (
   <div className="relative">
-    <Icon className="absolute left-3 top-3.5 text-gray-400" />
+    {Icon && createElement(Icon, { className: "absolute left-3 top-3.5 text-gray-400" })}
     <input
       type={type}
       value={value}
@@ -58,13 +58,13 @@ function Login() {
           </h2>
 
           <InputField
-            icon={FaUser}
+            Icon={FaUser}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Username"
           />
           <InputField
-            icon={FaLock}
+            Icon={FaLock}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useState, createElement } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../api/authApi.js";
 import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 
 // ✅ Move InputField outside to prevent redefinition on each render
-const InputField = ({ icon: Icon, value, onChange, type = "text", placeholder }) => (
+const InputField = ({ Icon, value, onChange, type = "text", placeholder }) => (
   <div className="relative">
-    <Icon className="absolute left-3 top-3.5 text-gray-400" />
+    {Icon && createElement(Icon, { className: "absolute left-3 top-3.5 text-gray-400" })}
     <input
       type={type}
       value={value}
@@ -41,8 +41,7 @@ function Register() {
     }
 
     try {
-      const data = await registerUser(name, username, email, password);
-      console.log("Registration success:", data);
+      await registerUser(name, username, email, password);
       navigate("/login");
     } catch (err) {
       const message = err.response?.data?.message || "Registration failed";
@@ -63,11 +62,11 @@ function Register() {
         >
           <h2 className="text-2xl md:text-3xl font-bold text-center text-blue-700">Create Account</h2>
 
-          <InputField icon={FaUser} value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name" />
-          <InputField icon={FaUser} value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-          <InputField icon={FaEnvelope} value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email Address" />
-          <InputField icon={FaLock} value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
-          <InputField icon={FaLock} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} type="password" placeholder="Confirm Password" />
+          <InputField Icon={FaUser} value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name" />
+          <InputField Icon={FaUser} value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
+          <InputField Icon={FaEnvelope} value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email Address" />
+          <InputField Icon={FaLock} value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
+          <InputField Icon={FaLock} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} type="password" placeholder="Confirm Password" />
 
           {error && <p className="text-sm text-center text-red-600 font-medium">{error}</p>}
 

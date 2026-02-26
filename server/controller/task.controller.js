@@ -57,6 +57,7 @@ const getTaskById = asyncHandler(async (req, res) => {
 const updateTask = asyncHandler(async (req, res) => {
   const { taskId } = req.params;
   const { title, description, status } = req.body;
+  const userId = req.user?._id;
 
   const updateFieleds = {};
 
@@ -68,8 +69,8 @@ const updateTask = asyncHandler(async (req, res) => {
     throw new ApiError(404, "No valid field for updation");
   }
 
-  const task = await Task.findByIdAndUpdate(
-    taskId,
+  const task = await Task.findOneAndUpdate(
+    { _id: taskId, user: userId },
     {
       $set: updateFieleds,
     },
